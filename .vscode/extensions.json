@@ -1,0 +1,40 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+	// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+	// List of extensions which should be recommended for users of this workspace.
+	"recommendations": [
+		// my extensions, ofc :P
+		"antfu.browse-lite",
+		"antfu.iconify",
+		"antfu.slidev",
+		"antfu.unocss",
+		"antfu.vite",
+		"antfu.where-am-i",
+		"antfu.open-in-github-button",
+		"lokalise.i18n-ally",
+		// themes & icons
+		"antfu.icons-carbon",
+		"antfu.theme-vitesse",
+		"file-icons.file-icons",
+		"sainnhe.gruvbox-material",
+		"Catppuccin.catppuccin-vsc-icons",
+		// life savers!
+		"dbaeumer.vscode-eslint",
+		"Vue.volar",
+		"GitHub.copilot",
+		"usernamehw.errorlens",
+		"streetsidesoftware.code-spell-checker",
+		// up to you
+		"eamodio.gitlens",
+		"EditorConfig.EditorConfig",
+		"github.vscode-github-actions",
+		"GitHub.vscode-pull-request-github",
+		"johnsoncodehk.vscode-tsconfig-helper",
+		"mpontus.tab-cycle",
+		"naumovs.color-highlight",
+		"WakaTime.vscode-wakatime",
+		"znck.grammarly"
+	],
+	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
+	"unwantedRecommendations": []
+}
