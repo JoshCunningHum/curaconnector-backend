@@ -128,3 +128,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Add nitro generated files
+.nitro/
+
+# Exclude Application DB
+curaconnector.sqlite
+pfps/
