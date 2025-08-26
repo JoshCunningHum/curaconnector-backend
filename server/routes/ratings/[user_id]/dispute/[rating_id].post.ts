@@ -6,18 +6,22 @@ import { db } from "~~/db";
 import { ratingDisputes, ratings } from "~~/schema/ratings";
 
 const bodySchema = z.object({
-    message: z.string().min(10, "Dispute message must be at least 10 characters long."),
+    message: z
+        .string()
+        .min(10, "Dispute message must be at least 10 characters long."),
 });
 
 export default defineEventHandler(async (event) => {
     const userId = getRouterParam(event, "user_id");
     const ratingId = getRouterParam(event, "rating_id");
     if (!userId || !ratingId)
-        throw createError({ statusCode: 400, message: "User ID and Rating ID are required" });
+        throw createError({
+            statusCode: 400,
+            message: "User ID and Rating ID are required",
+        });
 
     const body = await validateBody(event, bodySchema);
-    const user = await getUser(event);
-    if (!user) throw UserNotFoundError();
+    const user = await UserHelper.from(event);
 
     // 1. Verify the rating exists and belongs to the user
     const [rating] = await db
@@ -39,7 +43,10 @@ export default defineEventHandler(async (event) => {
         .where(eq(ratingDisputes.ratingId, +ratingId));
 
     if (existingDispute.value > 0) {
-        throw createError({ statusCode: 409, message: "This rating has already been disputed." });
+        throw createError({
+            statusCode: 409,
+            message: "This rating has already been disputed.",
+        });
     }
 
     // 3. Create the dispute
@@ -52,7 +59,10 @@ export default defineEventHandler(async (event) => {
         .returning();
 
     // 4. Mark the original rating as disputed
-    await db.update(ratings).set({ disputed: true }).where(eq(ratings.id, +ratingId));
+    await db
+        .update(ratings)
+        .set({ disputed: true })
+        .where(eq(ratings.id, +ratingId));
 
     return newDispute;
 });

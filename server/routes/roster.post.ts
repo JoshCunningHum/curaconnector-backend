@@ -1,16 +1,13 @@
 import { z } from "zod";
 import { arrayBufferToString } from "~/utils/arrayBufferToString";
-import { hashString } from "~/utils/hash";
 import { uploadPFP } from "~/utils/uploadPFP";
-import { db } from "~~/db";
-import { rosterproviders } from "~~/schema/rosterprovider";
-import { users } from "~~/schema/user";
 
 export default defineEventHandler(async (event) => {
     // Must be a company user type
-    const user = await getUser(event);
+    const user = await UserHelper.from(event);
     if (!user) throw UserNotFoundError();
-    if (!user.roles.includes("ROLE_COMPANY")) {
+
+    if (!user.is("ROLE_COMPANY")) {
         throw createError({
             statusCode: 403,
             statusMessage: "Invalid Operation",
@@ -66,32 +63,21 @@ export default defineEventHandler(async (event) => {
     const profilePicPath = await uploadPFP(profilePic);
 
     // Create a new user
-    const hashedpassword = await hashString(data.password);
-    const [rosterUser] = await db
-        .insert(users)
-        .values({
-            email: data.email,
-            password: hashedpassword,
-            roles: ["ROLE_ROSTER_PROVIDER"],
-            profilePicture: profilePicPath,
-        })
-        .returning();
-
-    // Create a new roster
-    const [roster] = await db
-        .insert(rosterproviders)
-        .values({
+    const rosterUser = await UserHelper.create({
+        email: data.email,
+        password: data.password,
+        roles: ["ROLE_ROSTER_PROVIDER"],
+        profilePicture: profilePicPath,
+        metadata: {
             companyId: user.id,
             firstname: data.firstname,
             lastname: data.lastname,
-            userId: rosterUser.id,
-        })
-        .returning();
+        },
+    });
 
     // Return the user details
     return {
         id: rosterUser.id,
-        rosterId: roster.id,
         profileURL: profilePicPath,
     };
 });

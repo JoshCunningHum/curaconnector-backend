@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "email": "alice.recipient@example.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$djaKh8/sNaUTE2sKlBVqWw$P996SK/AayxnlYTb42K6bjUbl3e6uNrP9Ns1IzNASI0",
+        "roles": "[\"ROLE_RECIPIENT\"]",
+        "createdAt": "2025-07-06T21:57:31.266Z",
+        "updatedAt": "2025-07-06T21:57:31.266Z",
+        "lastLogin": null,
+        "coordinates": null,
+        "preferences": "{\n  \"prefSkills\": [\n    \"Exercise\"\n  ],\n  \"prefLanguage\": [\n    \"English\"\n  ],\n  \"religion\": [\n    \"Catholic\"\n  ],\n  \"prefGender\": \"male\",\n  \"prefExperience\": 2,\n  \"prefVeteran\": false,\n  \"allowSmoke\": false,\n  \"smokes\": false,\n  \"prefTelemed\": true,\n  \"prefLift\": 1,\n  \"prefStart\": \"2025-07-06T10:36:54.163Z\",\n  \"prefEnd\": \"2025-07-12T10:36:15.000Z\",\n  \"prefHourlyPay\": 1\n}",
+        "profile_picture": "default.jpg"
+    },
+    {
+        "id": 2,
+        "email": "bob.recipient@example.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$nLakn/UBf2gX6Wsej1KgAQ$JkieYogbVGyp8dfAG+Vd5skdCv3IBwHY5KPVcbh5280",
+        "roles": "[\"ROLE_RECIPIENT\"]",
+        "createdAt": "2025-07-06T21:57:31.753Z",
+        "updatedAt": "2025-07-06T21:57:31.753Z",
+        "lastLogin": null,
+        "coordinates": null,
+        "preferences": "{\n  \"prefSkills\": [\n    \"Bathing\",\n    \"Groceries & Shopping\",\n    \"Grooming\",\n    \"Transferring & Mobility\"\n  ],\n  \"prefLanguage\": [\n    \"English\"\n  ],\n  \"religion\": [\n    \"Catholic\"\n  ],\n  \"prefGender\": \"female\",\n  \"prefExperience\": 2,\n  \"prefVeteran\": false,\n  \"allowSmoke\": false,\n  \"smokes\": false,\n  \"prefTelemed\": false,\n  \"prefLift\": 1,\n  \"prefStart\": \"2025-07-06T10:36:54.000Z\",\n  \"prefEnd\": \"2025-07-31T10:36:54.000Z\",\n  \"prefHourlyPay\": 2\n}",
+        "profile_picture": "default.jpg"
+    },
+    {
+        "id": 3,
+        "email": "carol.provider@example.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$asMlBjtks/pNgiSUEjrUYg$mkB4el3zDbWBm1w9ctlwWe9oQ0cwgDzTqw9uyyPP9UE",
+        "roles": "[\"ROLE_PROVIDER\"]",
+        "createdAt": "2025-07-06T21:57:32.222Z",
+        "updatedAt": "2025-07-28T10:24:12.313Z",
+        "lastLogin": "2025-08-03T17:58:57.890Z",
+        "coordinates": null,
+        "preferences": "{\"skills\":[\"Skilled Nursing\",\"Administer Medication\",\"DME\",\"IV THERAPY\",\"Wound Care\"],\"knownLanguage\":[\"English\",\"Spanish\",\"Vietnamese\"],\"religionAwareness\":[\"Agnostic\",\"Catholic\",\"Hindu\",\"Muslim\"],\"gender\":\"female\",\"experience\":1,\"veteran\":false,\"allowSmoke\":true,\"smokes\":false,\"canTelemed\":false,\"liftLimit\":0,\"canStart\":\"2025-01-01T10:36:54.000Z\",\"canEnd\":\"2027-01-01T10:36:54.000Z\",\"hourlyRate\":1,\"careType\":\"health_therapists\"}",
+        "profile_picture": "default.jpg"
+    },
+    {
+        "id": 4,
+        "email": "dave.provider@example.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$zlmNDpi2po1tz6XREi2cqw$dQ9V11GrIYE64WDoRBLLmkmUVxQA307DKy3LLvWNBds",
+        "roles": "[\"ROLE_PROVIDER\"]",
+        "createdAt": "2025-07-06T21:57:32.707Z",
+        "updatedAt": "2025-07-06T21:57:32.707Z",
+        "lastLogin": null,
+        "coordinates": null,
+        "preferences": "{\n  \"skills\": [\n    \"Exercise\",\n    \"Physical Therapist\",\n    \"Transportation\"\n  ],\n  \"knownLanguage\": [\n    \"English\"\n  ],\n  \"religionAwareness\": [\n    \"Agnostic\",\n    \"Catholic\",\n    \"Hindu\",\n    \"Muslim\"\n  ],\n  \"gender\": \"male\",\n  \"experience\": 0,\n  \"veteran\": false,\n  \"allowSmoke\": true,\n  \"smokes\": false,\n  \"canTelemed\": false,\n  \"liftLimit\": 2,\n  \"canStart\": \"2025-01-01T10:36:54.000Z\",\n  \"canEnd\": \"2027-01-01T10:36:54.000Z\",\n  \"hourlyRate\": 1\n}",
+        "profile_picture": "default.jpg"
+    },
+    {
+        "id": 5,
+        "email": "eve.provider@example.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$ymGgE/pA/JWunmYEPrym0w$1yPAqkt8J+74NSmqvUKYuT2zSyv4xEP0kRgQl3rxrY0",
+        "roles": "[\"ROLE_PROVIDER\"]",
+        "createdAt": "2025-07-06T21:57:33.246Z",
+        "updatedAt": "2025-07-06T21:57:33.246Z",
+        "lastLogin": null,
+        "coordinates": null,
+        "preferences": "{\n  \"skills\": [\n    \"Bathing\",\n    \"Companionship\",\n    \"DME\",\n    \"Dementia Care\",\n    \"Groceries & Shopping\",\n    \"Grooming\",\n    \"Hospice\",\n    \"Meal Prep\",\n    \"Medication Reminders\",\n    \"Palliative Care\",\n    \"Toileting\",\n    \"Transferring & Mobility\",\n    \"Wound Care\"\n  ],\n  \"knownLanguage\": [\n    \"English\",\n    \"Chinese\",\n    \"Spanish\",\n    \"Vietnamese\"\n  ],\n  \"religionAwareness\": [\n    \"Agnostic\",\n    \"Catholic\",\n    \"Hindu\",\n    \"Muslim\"\n  ],\n  \"gender\": \"female\",\n  \"experience\": 1,\n  \"veteran\": false,\n  \"allowSmoke\": true,\n  \"smokes\": false,\n  \"canTelemed\": false,\n  \"liftLimit\": 1,\n  \"canStart\": \"2025-01-01T10:36:54.000Z\",\n  \"canEnd\": \"2027-01-01T10:36:54.000Z\",\n  \"hourlyRate\": 1\n}\n",
+        "profile_picture": "default.jpg"
+    },
+    {
+        "id": 6,
+        "email": "frank.company@example.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$5FciVU/gvD8FYZR+imeqrQ$RAcwSpn2fOT10VC72BcDf+daa5cFRwgKtAFue1tIBUI",
+        "roles": "[\"ROLE_COMPANY\"]",
+        "createdAt": "2025-07-06T21:57:33.674Z",
+        "updatedAt": "2025-07-06T21:57:33.674Z",
+        "lastLogin": null,
+        "coordinates": null,
+        "preferences": "{\n  \"prefSkills\": [\n    \"Exercise\",\n    \"Physical Therapist\"\n  ],\n  \"prefLanguage\": [\n    \"English\"\n  ],\n  \"religion\": [\n    \"Agnostic\"\n  ],\n  \"prefGender\": \"both\",\n  \"prefExperience\": 1,\n  \"prefVeteran\": false,\n  \"allowSmoke\": false,\n  \"smokes\": false,\n  \"prefTelemed\": false,\n  \"prefLift\": 2,\n  \"prefStart\": \"2025-07-06T10:36:54.000Z\",\n  \"prefEnd\": \"2025-12-31T10:36:54.000Z\",\n  \"prefHourlyPay\": 1\n}\n",
+        "profile_picture": "default.jpg"
+    },
+    {
+        "id": 7,
+        "email": "jkdimpas@gmail.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$K2dd+IBlWZ5X2rL1dexfxQ$FYMdCc6IhEKuHk54PdHDGkSKFjY/IrbstDsZHucwl20",
+        "roles": "[\"ROLE_RECIPIENT\"]",
+        "createdAt": "2025-07-06T21:57:51.398Z",
+        "updatedAt": "2025-07-16T14:51:03.958Z",
+        "lastLogin": "2025-08-08T12:45:44.747Z",
+        "coordinates": null,
+        "preferences": "{\"prefSkills\":[\"Skilled Nursing\"],\"prefLanguage\":[\"English\"],\"religion\":[\"Agnostic\"],\"prefGender\":\"female\",\"prefExperience\":1,\"prefVeteran\":false,\"allowSmoke\":false,\"smokes\":false,\"prefTelemed\":false,\"prefLift\":0,\"prefStart\":\"2025-07-07T10:36:54.000Z\",\"prefEnd\":\"2025-07-11T10:36:54.000Z\",\"prefHourlyPay\":1}",
+        "profile_picture": "1751865254071-xirot4rss1.jpg"
+    },
+    {
+        "id": 8,
+        "email": "josh.roster@example.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$oTA+4fcTR/KUUwHHvgfVsA$rQ5MsWBUR3O8M/9dC/Czu+NU1nol7n0VDvPYL0FJtAQ",
+        "roles": "[\"ROLE_ROSTER_PROVIDER\"]",
+        "createdAt": "2025-08-07T14:01:40.855Z",
+        "updatedAt": "2025-08-07T14:01:40.855Z",
+        "lastLogin": null,
+        "coordinates": null,
+        "preferences": "{\"skills\":[\"Skilled Nursing\",\"Administer Medication\",\"DME\",\"IV THERAPY\",\"Wound Care\"],\"knownLanguage\":[\"English\",\"Spanish\",\"Vietnamese\"],\"religionAwareness\":[\"Agnostic\",\"Catholic\",\"Hindu\",\"Muslim\"],\"gender\":\"female\",\"experience\":1,\"veteran\":false,\"allowSmoke\":true,\"smokes\":false,\"canTelemed\":false,\"liftLimit\":0,\"canStart\":\"2025-01-01T10:36:54.000Z\",\"canEnd\":\"2027-01-01T10:36:54.000Z\",\"hourlyRate\":1,\"careType\":\"health_therapists\"}",
+        "profile_picture": "1754575300603-ltp88r4emb.png"
+    },
+    {
+        "id": 9,
+        "email": "test1@test.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$Mx+qeNP5MatPk/nXjMHp7Q$eW/t4kB9uahSvO1flqBK3/XLOMiu8JgPlgV5/JTbePA",
+        "roles": "[\"ROLE_RECIPIENT\"]",
+        "createdAt": "2025-08-12T12:32:46.549Z",
+        "updatedAt": "2025-08-12T12:32:46.549Z",
+        "lastLogin": null,
+        "coordinates": null,
+        "preferences": null,
+        "profile_picture": "1755001966543-6cg8bp9gjoy.jpg"
+    },
+    {
+        "id": 10,
+        "email": "testp@test.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=1$D/lcBxOBls9uvKDEhs1KwQ$llaQ5rl5p0T0XcXLpvaImMpPly8HeOksyOuS7KQJrmI",
+        "roles": "[\"ROLE_PROVIDER\"]",
+        "createdAt": "2025-08-15T19:00:05.311Z",
+        "updatedAt": "2025-08-15T19:00:05.311Z",
+        "lastLogin": null,
+        "coordinates": null,
+        "preferences": "{\"skills\":[\"Skilled Nursing\",\"Administer Medication\",\"DME\",\"IV THERAPY\",\"Wound Care\"],\"knownLanguage\":[\"English\",\"Spanish\",\"Vietnamese\"],\"religionAwareness\":[\"Agnostic\",\"Catholic\",\"Hindu\",\"Muslim\"],\"gender\":\"female\",\"experience\":1,\"veteran\":false,\"allowSmoke\":true,\"smokes\":false,\"canTelemed\":false,\"liftLimit\":0,\"canStart\":\"2025-01-01T10:36:54.000Z\",\"canEnd\":\"2027-01-01T10:36:54.000Z\",\"hourlyRate\":1,\"careType\":\"health_therapists\"}",
+        "profile_picture": "1755284405305-s0fz1k8ubzl.jpg"
+    }
+]

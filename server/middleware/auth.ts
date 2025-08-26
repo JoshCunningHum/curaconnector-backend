@@ -8,6 +8,7 @@ const anonRoutes = [
     "/register",
 
     // Images (handled by the images middleware for auth/verification)
+    // TODO: Might add this as 'non-anon' right?
     /^\/images\/.*/,
 ];
 

@@ -15,11 +15,11 @@ export default defineEventHandler(async (event) => {
         .from(visitSessions)
         .where(eq(visitSessions.id, sid));
 
-    const user = await getUser(event);
+    const user = await UserHelper.from(event);
     if (!user) throw UserNotFoundError();
 
     // User should only be a recipient
-    if (!isUser(user, "ROLE_RECIPIENT")) {
+    if (!user.is("ROLE_RECIPIENT")) {
         throw createError({
             status: 403,
             statusMessage: "User is not a recipient",

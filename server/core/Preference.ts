@@ -30,11 +30,20 @@ type PipelineFailCallback = (
     pref: Preference<AnyObj, AnyObj>
 ) => void;
 
-type ExtractDemand<T> = T extends Record<string, Preference<infer D, infer _>> ? D : never;
-type ExtractSupply<T> = T extends Record<string, Preference<infer _, infer S>> ? S : never;
+type ExtractDemand<T> = T extends Record<string, Preference<infer D, infer _>>
+    ? D
+    : never;
+type ExtractSupply<T> = T extends Record<string, Preference<infer _, infer S>>
+    ? S
+    : never;
 
-type MatcherRecord<T extends AnyObj> = Record<keyof T, T[keyof T] | ((v: T[keyof T]) => boolean)>;
-type ExtractValues<T extends AnyObj> = T extends Record<string, infer V> ? V : never;
+type MatcherRecord<T extends AnyObj> = Record<
+    keyof T,
+    T[keyof T] | ((v: T[keyof T]) => boolean)
+>;
+type ExtractValues<T extends AnyObj> = T extends Record<string, infer V>
+    ? V
+    : never;
 
 export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
     protected invert?: boolean;
@@ -56,22 +65,25 @@ export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
         return this;
     }
 
-    SkipFalseyDemand(...keys: (keyof Demand)[]) {
-        const odlfn = this.matchFn;
+    SkipFalsyDemand(...keys: (keyof Demand)[]) {
+        const oldFn = this.matchFn;
         this.matchFn = (demand, supply) => {
-            const hasFalsey = keys.some((k) => !demand[k]);
-            if (hasFalsey) return true;
-            return odlfn(demand, supply);
+            const hasFalsy = keys.some((k) => !demand[k]);
+            if (hasFalsy) return true;
+            return oldFn(demand, supply);
         };
         return this;
     }
 
     SkipIfDemand(
         req: Partial<
-            Record<keyof Demand, ExtractValues<Demand> | ((v: ExtractValues<Demand>) => boolean)>
+            Record<
+                keyof Demand,
+                ExtractValues<Demand> | ((v: ExtractValues<Demand>) => boolean)
+            >
         >
     ) {
-        const oldfn = this.matchFn;
+        const oldFn = this.matchFn;
         this.matchFn = (demand, supply) => {
             const valid = Object.entries(req).every(([k, v]) => {
                 const dv = demand[k];
@@ -82,7 +94,7 @@ export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
             // If all the required demand is valid, then skip this field
             if (valid) return true;
 
-            return oldfn(demand, supply);
+            return oldFn(demand, supply);
         };
 
         return this;
@@ -90,10 +102,13 @@ export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
 
     SkipIfSupply(
         req: Partial<
-            Record<keyof Supply, ExtractValues<Supply> | ((v: ExtractValues<Supply>) => boolean)>
+            Record<
+                keyof Supply,
+                ExtractValues<Supply> | ((v: ExtractValues<Supply>) => boolean)
+            >
         >
     ) {
-        const oldfn = this.matchFn;
+        const oldFn = this.matchFn;
         this.matchFn = (demand, supply) => {
             const valid = Object.entries(req).every(([k, v]) => {
                 const dv = demand[k];
@@ -104,7 +119,7 @@ export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
             // If all the required supply is valid, then skip this field
             if (valid) return true;
 
-            return oldfn(demand, supply);
+            return oldFn(demand, supply);
         };
 
         return this;
@@ -126,9 +141,14 @@ export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
             demandKey: DK;
             supplyKey: SK;
         }) => {
-            return new Preference<RecordMap<DK, Value[]>, RecordMap<SK, Value[]>>({
+            return new Preference<
+                RecordMap<DK, Value[]>,
+                RecordMap<SK, Value[]>
+            >({
                 matchFn: (demand, supply) =>
-                    demand[demandKey].every((t) => supply[supplyKey].includes(t)),
+                    demand[demandKey].every((t) =>
+                        supply[supplyKey].includes(t)
+                    ),
             });
         };
     }
@@ -142,14 +162,15 @@ export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
             supplyKey: SK;
         }) =>
             new Preference<RecordMap<DK, Value>, RecordMap<SK, Value>>({
-                matchFn: (demand, supply) => demand[demandKey] === supply[supplyKey],
+                matchFn: (demand, supply) =>
+                    demand[demandKey] === supply[supplyKey],
             });
     }
 
     private static IntStrategies = {
         equal: (a: number, b: number) => a === b,
-        atleast: (a: number, b: number) => a >= b,
-        atmost: (a: number, b: number) => a <= b,
+        atLeast: (a: number, b: number) => a >= b,
+        atMost: (a: number, b: number) => a <= b,
         greater: (a: number, b: number) => a > b,
         lesser: (a: number, b: number) => a < b,
     } as const;
@@ -193,7 +214,10 @@ export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
         return {
             $inferDemand: {} as Prettify<ExtractDemand<PR>>,
             $inferSupply: {} as Prettify<ExtractSupply<PR>>,
-            check(a: Prettify<ExtractDemand<PR>>, b: Prettify<ExtractSupply<PR>>) {
+            check(
+                a: Prettify<ExtractDemand<PR>>,
+                b: Prettify<ExtractSupply<PR>>
+            ) {
                 return [...steps.entries()].every(([key, p]) => {
                     let [result, err] = safeTry(() => p.matchFn(a, b));
 
@@ -207,7 +231,9 @@ export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
             },
             process(base: User, compares: User[]) {
                 const bPref = base.preferences;
-                console.log(`________________ Process matching: ${base.email} ___________________`);
+                console.log(
+                    `________________ Process matching: ${base.email} ___________________`
+                );
                 console.log(bPref);
                 return compares.filter((o) => {
                     const oPref = o.preferences;
@@ -215,7 +241,9 @@ export class Preference<Demand extends AnyObj, Supply extends AnyObj> {
                     //@ts-ignore
                     const result = this.check(bPref, oPref);
                     console.log(oPref);
-                    console.log(`  ${!result ? "Failed" : "Successful"} Try: ${o.email}`);
+                    console.log(
+                        `  ${!result ? "Failed" : "Successful"} Try: ${o.email}`
+                    );
                     if (!result) return false;
                     return true;
                 });

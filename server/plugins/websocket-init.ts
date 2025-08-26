@@ -1,7 +1,4 @@
-import dayjs from "dayjs";
-import { eq } from "drizzle-orm";
-import { db } from "~~/db";
-import { users } from "~~/schema/user";
+import { UserHelper } from "~/utils/user-utils";
 
 export default defineNitroPlugin(async (nitro) => {
     // Update LastLogin
@@ -14,9 +11,7 @@ export default defineNitroPlugin(async (nitro) => {
             }`
         );
 
-        await db
-            .update(users)
-            .set({ lastLogin: dayjs().toISOString() })
-            .where(eq(users.id, conn.id));
+        const user = await UserHelper.from(conn.id);
+        await user!.online(true);
     });
 });

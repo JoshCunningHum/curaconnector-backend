@@ -24,21 +24,13 @@ export default defineEventHandler(async (event) => {
     const completedRatio = ~((finished / (taskcount || 1)) * 100);
 
     // Get extra details on the users
-    const recipient = (await getUser(session.recipient))!;
-    const visitor = (await getUser(session.visitor))!;
+    const recipient = await UserHelper.from(session.recipient);
+    const visitor = await UserHelper.from(session.visitor);
 
     return {
         ...session,
         completed: completedRatio,
-        recipient: {
-            id: recipient.id,
-            name: await getName(recipient),
-            profile: recipient.profilePicture,
-        },
-        visitor: {
-            id: visitor.id,
-            name: await getName(visitor),
-            profile: visitor.profilePicture,
-        },
+        recipient: recipient!.toJson(),
+        visitor: visitor!.toJson(),
     };
 });

@@ -1,8 +1,12 @@
 {
     "prettier.tabWidth": 4,
     "cSpell.words": [
+        "crossws",
+        "curaconnector",
         "Favourite",
         "pfps",
+        "Telemed",
+        "telemedicine",
         "unexisting"
     ]
 }

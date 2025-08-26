@@ -3,11 +3,8 @@ import {
     PatientPreference,
     ProviderPreference,
 } from "../server/contants/preferences";
-import { Recipient } from "./recipient";
-import { Provider } from "./provider";
-import { Company } from "./company";
-import { RosterProvider } from "./rosterprovider";
 
+// ROLES
 export const userRolesMap = [
     "ROLE_USER", // The only purpose it to ensure array always have 1 role
     "ROLE_RECIPIENT",
@@ -17,6 +14,18 @@ export const userRolesMap = [
 ] as const;
 export type UserRole = (typeof userRolesMap)[number];
 
+// Metadata
+export type UserPreferences = PatientPreference | ProviderPreference;
+export interface UserMetadata {
+    firstname?: string;
+    lastname?: string;
+    name?: string;
+
+    // For Rosters
+    companyId?: number;
+}
+
+// Table
 export const users = sqliteTable("users", {
     id: integer("id").primaryKey().unique(),
 
@@ -28,26 +37,29 @@ export const users = sqliteTable("users", {
         .$type<[UserRole, ...UserRole[]]>()
         .$defaultFn(() => ["ROLE_USER"]), // Types ensure that there should be at least 1 user type
 
-    createdAt: text("createdAt").$defaultFn(() => new Date().toISOString()),
-    updatedAt: text("updatedAt").$defaultFn(() => new Date().toISOString()),
-    lastLogin: text("lastLogin"),
+    createdAt: text("createdAt")
+        .$defaultFn(() => new Date().toISOString())
+        .notNull(),
+    updatedAt: text("updatedAt")
+        .$defaultFn(() => new Date().toISOString())
+        .notNull(),
 
-    coords: text("coordinates", { mode: "json" }).$type<{
-        latitude: number;
-        longitude: number;
-    }>(),
-
-    // Stored as a seperate field
-    preferences: text("preferences", { mode: "json" }).$type<
-        PatientPreference | ProviderPreference
-    >(),
+    isOnline: integer("isOnline", { mode: "boolean" }).default(false),
+    lastLogin: text("lastLogin").$defaultFn(() => new Date().toISOString()),
 
     // Metadata
-    profilePicture: text("profile_picture"),
+    preferences: text("preferences", { mode: "json" })
+        .$type<UserPreferences>()
+        //@ts-ignore
+        .$defaultFn(() => ({})),
+
+    metadata: text("metadata", { mode: "json" })
+        .notNull()
+        .default({})
+        .$type<UserMetadata>(),
+
+    profilePicture: text("profile_picture").default("default.png"),
 });
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
-
-// Sub Users
-export type SubUser = Recipient | Provider | Company | RosterProvider;

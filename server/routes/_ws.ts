@@ -1,6 +1,5 @@
 import { defineWebSocketHandler } from "h3";
 import { WebsocketMessageSchema, WSHandler } from "../types/Websocket";
-
 import handlers from "../utils/websockets";
 
 export default defineWebSocketHandler({
@@ -15,7 +14,7 @@ export default defineWebSocketHandler({
         const { success, data, error } = WebsocketMessageSchema.safeParse(msg);
 
         if (!success) {
-            console.error(`Invalid Webscoket message format:`, error);
+            console.error(`Invalid Websocket message format:`, error);
             peer.send(
                 JSON.stringify({
                     event: "error",

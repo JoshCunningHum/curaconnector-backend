@@ -1,12 +1,11 @@
 // Create a new rating for a user
 
+import { and, count, eq } from "drizzle-orm";
 import { z } from "zod";
-import { and, eq, or, count } from "drizzle-orm";
+import { visitSessions } from "~~/schema/visit-session";
 import { db } from "../../../db";
 import { ratings } from "../../../schema/ratings";
-import { messages } from "../../../schema/message";
-import { users, UserRole } from "../../../schema/user";
-import { getUser } from "../../utils/getUser";
+import { UserRole } from "../../../schema/user";
 
 const bodySchema = z.object({
     rating: z.number().min(1).max(5),
@@ -17,26 +16,30 @@ const ratingAuthors: UserRole[] = ["ROLE_RECIPIENT", "ROLE_COMPANY"];
 const ratingReceivers: UserRole[] = ["ROLE_PROVIDER", "ROLE_ROSTER_PROVIDER"];
 
 export default defineEventHandler(async (event) => {
-    const receiverId = getRouterParam(event, "user_id");
-    if (!receiverId) throw createError({ statusCode: 400, message: "Receiver ID is required" });
+    const receiverId = parseInt(getRouterParam(event, "user_id") ?? "0");
+    if (!receiverId)
+        throw createError({
+            statusCode: 400,
+            message: "Receiver ID is required",
+        });
 
     const body = await validateBody(event, bodySchema);
-    const author = await getUser(event);
-    if (!author) throw UserNotFoundError();
+    const author = await UserHelper.from(event);
 
     // 1. Check user type permissions
-    if (!author.roles.some((role) => ratingAuthors.includes(role))) {
+    if (!author.is(...ratingAuthors)) {
         throw createError({
             statusCode: 403,
             message: "You are not authorized to create ratings.",
         });
     }
 
-    const [receiver] = await db.select().from(users).where(eq(users.id, +receiverId));
-    if (!receiver || !receiver.roles.some((role) => ratingReceivers.includes(role))) {
+    const receiver = await UserHelper.from(receiverId);
+    if (!receiver?.is(...ratingReceivers)) {
         throw createError({
             statusCode: 404,
-            message: "The user you are trying to rate is not a valid rating receiver.",
+            message:
+                "The user you are trying to rate is not a valid rating receiver.",
         });
     }
 
@@ -47,24 +50,27 @@ export default defineEventHandler(async (event) => {
         .where(and(eq(ratings.author, author.id), eq(ratings.to, +receiverId)));
 
     if (existingRating.value > 0) {
-        throw createError({ statusCode: 409, message: "You have already rated this user." });
+        throw createError({
+            statusCode: 409,
+            message: "You have already rated this user.",
+        });
     }
 
-    // 3. Check for prior communication
-    const [communication] = await db
+    // 3. Check for prior visit sessions
+    const [sessions] = await db
         .select({ value: count() })
-        .from(messages)
+        .from(visitSessions)
         .where(
-            or(
-                and(eq(messages.sender, author.id), eq(messages.receiver, +receiverId)),
-                and(eq(messages.sender, +receiverId), eq(messages.receiver, author.id))
+            and(
+                eq(visitSessions.recipient, author.id),
+                eq(visitSessions.visitor, receiver.id)
             )
         );
 
-    if (communication.value === 0) {
+    if (sessions.value === 0) {
         throw createError({
             statusCode: 403,
-            message: "You must have a prior conversation to rate this user.",
+            message: "You must have a prior visit session to rate this user.",
         });
     }
 

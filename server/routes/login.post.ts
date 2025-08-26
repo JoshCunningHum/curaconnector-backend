@@ -1,14 +1,11 @@
-import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { db } from "~~/db";
-import { users } from "~~/schema/user";
-import argon2 from "argon2";
+import { JWT_EXPIRES_IN } from "~/contants/config";
 import {
     createAccessToken,
     createRefreshToken,
     refreshTokens,
 } from "~/utils/tokens";
-import { JWT_EXPIRES_IN } from "~/contants/config";
+import { UserHelper } from "~/utils/user-utils";
 import { validateBody } from "~/utils/validateBody";
 
 const bodySchema = z.object({
@@ -22,7 +19,8 @@ export default defineEventHandler(async (event) => {
     const { email, password } = await validateBody(event, bodySchema);
 
     // Check if user exists
-    const [user] = await db.select().from(users).where(eq(users.email, email));
+    const user = await UserHelper.from(email);
+    console.log(user);
 
     if (!user) {
         throw createError({
@@ -32,9 +30,8 @@ export default defineEventHandler(async (event) => {
     }
 
     // Check if password matches
-    const [validPassword] = await safeAwait(
-        argon2.verify(user.password, password)
-    );
+    const validPassword = await user.checkPassword(password);
+
     if (!validPassword) {
         throw createError({
             statusCode: 401,
@@ -43,26 +40,17 @@ export default defineEventHandler(async (event) => {
     }
 
     // Create tokens
-    const accessToken = createAccessToken(user);
-    const refreshToken = createRefreshToken(user);
+    const accessToken = createAccessToken(user.user);
+    const refreshToken = createRefreshToken(user.user);
 
     // Store refresh token
     refreshTokens.add(refreshToken);
-
-    // Acquire the user concrete
-    const conc = await getUserConcrete({ id: user.id, roles: user.roles })!;
 
     // Return tokens
     return {
         accessToken,
         refreshToken,
-        user: {
-            id: user.id,
-            email: user.email,
-            roles: user.roles,
-            profile: user.profilePicture,
-        },
-        sub: conc?.sub,
+        user: user.toJson({ dates: true, preference: true }),
         expiresIn: JWT_EXPIRES_IN,
     };
 });

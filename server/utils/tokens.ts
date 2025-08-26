@@ -1,5 +1,9 @@
 import jwt from "jsonwebtoken";
-import { JWT_EXPIRES_IN, JWT_REFRESH_SECRET, JWT_SECRET } from "~/contants/config";
+import {
+    JWT_EXPIRES_IN,
+    JWT_REFRESH_SECRET,
+    JWT_SECRET,
+} from "~/contants/config";
 import { User } from "~~/schema/user";
 
 export type JwtPayload = Pick<User, "id" | "email"> & {
@@ -7,12 +11,9 @@ export type JwtPayload = Pick<User, "id" | "email"> & {
 };
 
 export const createAccessToken = ({ id, email }: Omit<JwtPayload, "type">) => {
-  
-
     return jwt.sign({ id, email, type: "access" }, JWT_SECRET, {
         expiresIn: JWT_EXPIRES_IN,
     });
-
 };
 
 // * Note: does not contain expiree since it is in the mobile app
@@ -34,5 +35,3 @@ export const decodeToken = async (
 
 // In-memory storage for refresh tokens
 export const refreshTokens = new Set<string>();
-
-// Utils

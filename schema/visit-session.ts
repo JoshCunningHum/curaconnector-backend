@@ -5,6 +5,7 @@ import { PatientPreference } from "~/contants/preferences";
 type CheckListItems = keyof PatientPreference;
 export const visitSessions = sqliteTable("visit_sessions", {
     id: integer("id").primaryKey().unique(),
+
     visitor: integer("visitor")
         .references(() => users.id)
         .notNull(),
@@ -24,6 +25,7 @@ export const visitSessions = sqliteTable("visit_sessions", {
     isVerified: integer("is_verified", { mode: "boolean" })
         .default(false)
         .notNull(),
+
     verifiedDate: text("verified_date"),
 });
 

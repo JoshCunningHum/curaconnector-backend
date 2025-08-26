@@ -1,9 +1,6 @@
 // Get all messages from a certain user (paginated)
 
 import { z } from "zod";
-import { and, desc, eq, or, lt } from "drizzle-orm";
-import { db } from "../../../db";
-import { messages } from "../../../schema/message";
 import { validateQuery } from "~/utils/validateBody";
 
 const querySchema = z.object({
@@ -12,46 +9,24 @@ const querySchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-    const otherUserId = getRouterParam(event, "id");
-    if (!otherUserId)
-        throw createError({
-            statusCode: 400,
-            message: "Other user ID is required",
-        });
+    const user = await UserHelper.from(event);
+
+    const other = parseInt(getRouterParam(event, "id")!);
+    const otherUser = await UserHelper.from(other);
 
     const query = await validateQuery(event, querySchema);
-    const user = await getUser(event);
-    if (!user) throw UserNotFoundError();
 
-    const messageList = await db
-        .select()
-        .from(messages)
-        .where(
-            and(
-                or(
-                    and(
-                        eq(messages.sender, user.id),
-                        eq(messages.receiver, +otherUserId)
-                    ),
-                    and(
-                        eq(messages.sender, +otherUserId),
-                        eq(messages.receiver, user.id)
-                    )
-                ),
-                query.cursor ? lt(messages.id, query.cursor) : undefined
-            )
-        )
-        .orderBy(desc(messages.createdAt))
-        .limit(query.limit);
+    // Get the messages
+    const [conversation] = await ConversationUtil.with(user, otherUser!);
+    const messages = await conversation.messages(query);
 
     let nextCursor: number | null = null;
-    if (messageList.length === query.limit) {
-        nextCursor = messageList[messageList.length - 1].id;
+    if (messages.length === query.limit) {
+        nextCursor = messages.at(-1)?.id ?? null;
     }
 
-    messageList.reverse();
-    const response = { messages: messageList, nextCursor };
-    console.log(response);
+    messages.reverse();
+    const response = { messages, nextCursor };
 
     return response;
 });

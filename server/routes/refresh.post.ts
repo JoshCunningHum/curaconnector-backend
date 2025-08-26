@@ -1,9 +1,8 @@
 import { count, eq } from "drizzle-orm";
-import jwt from "jsonwebtoken";
 import { z } from "zod";
-import { JWT_EXPIRES_IN, JWT_REFRESH_SECRET } from "~/contants/config";
+import { JWT_EXPIRES_IN } from "~/contants/config";
 import { safeAwait } from "~/utils/safetry";
-import { createAccessToken, decodeToken, JwtPayload, refreshTokens } from "~/utils/tokens";
+import { createAccessToken, decodeToken, refreshTokens } from "~/utils/tokens";
 import { validateBody } from "~/utils/validateBody";
 import { db } from "~~/db";
 import { users } from "~~/schema/user";
@@ -18,7 +17,8 @@ export default defineEventHandler(async (event) => {
     if (!refreshTokens.has(refreshToken)) {
         throw createError({
             statusCode: 403,
-            message: "The provided refresh token is invalid or has been revoked",
+            message:
+                "The provided refresh token is invalid or has been revoked",
         });
     }
 

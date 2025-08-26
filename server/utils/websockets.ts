@@ -1,6 +1,5 @@
-import { Peer } from "crossws";
-
 import { User } from "../../schema/user";
+import { Peer } from "crossws";
 import { isWSConn, WSConn } from "../types/Websocket";
 
 import EventEmitter from "node:events";

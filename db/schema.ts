@@ -1,10 +1,8 @@
+export { conversation, conversationMember } from "../schema/conversation";
 export { favorites } from "../schema/favorites";
-export { companies } from "../schema/company";
-export { providers } from "../schema/provider";
-export { recipients } from "../schema/recipient";
-export { rosterproviders } from "../schema/rosterprovider";
-export { users } from "../schema/user";
+export { messageAccesses } from "../schema/message-access";
 export { messages } from "../schema/message";
-export { ratings, ratingDisputes } from "../schema/ratings";
 export { notifications } from "../schema/notification";
+export { ratings, ratingDisputes } from "../schema/ratings";
+export { users } from "../schema/user";
 export { visitSessions } from "../schema/visit-session";

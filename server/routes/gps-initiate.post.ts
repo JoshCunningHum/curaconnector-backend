@@ -10,8 +10,7 @@ const bodySchema = z.object({
 
 export default defineEventHandler(async (event) => {
     const body = await validateBody(event, bodySchema);
-    const user = await getUser(event);
-    if (!user) throw UserNotFoundError();
+    const user = await UserHelper.from(event);
 
     const msgId = body.messageId;
     const [msg] = await db
@@ -19,6 +18,11 @@ export default defineEventHandler(async (event) => {
         .from(messages)
         .where(eq(messages.id, msgId));
 
+    // Get conversation
+    const conversation = await ConversationUtil.fromMessage(msg);
+    // Get the 'other' members
+    const [member] = conversation.other(user);
+
     // Create a session for this
-    locationSharing.addSession(msg.sender, msg.receiver);
+    locationSharing.addSession(user.id, member.id);
 });

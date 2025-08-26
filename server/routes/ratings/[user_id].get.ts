@@ -1,10 +1,9 @@
 // Get all ratings for a receiver (paginated), along with a summary
 
+import { and, avg, count, desc, eq, lt } from "drizzle-orm";
 import { z } from "zod";
-import { and, desc, eq, avg, count, lt } from "drizzle-orm";
 import { db } from "../../../db";
 import { ratings } from "../../../schema/ratings";
-import { users } from "../../../schema/user";
 
 const querySchema = z.object({
     limit: z.coerce.number().default(10),
@@ -13,7 +12,8 @@ const querySchema = z.object({
 
 export default defineEventHandler(async (event) => {
     const userId = getRouterParam(event, "user_id");
-    if (!userId) throw createError({ statusCode: 400, message: "User ID is required" });
+    if (!userId)
+        throw createError({ statusCode: 400, message: "User ID is required" });
 
     const query = await getValidatedQuery(event, (q) => querySchema.parse(q));
 
