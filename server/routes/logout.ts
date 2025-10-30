@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { refreshTokens } from "~/utils/tokens";
-import { UserHelper } from "~/utils/user-utils";
+import { UserUtil } from "~/utils/user-utils";
 import { validateBody } from "~/utils/validateBody";
 
 const bodySchema = z.object({
@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     const { refreshToken } = await validateBody(event, bodySchema);
     refreshTokens.delete(refreshToken);
 
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
     user?.online(false);
 
     return "Loggedout successfully";

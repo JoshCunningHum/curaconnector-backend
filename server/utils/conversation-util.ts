@@ -6,20 +6,20 @@ import {
     conversationMember,
 } from "~~/schema/conversation";
 import { MessageAccess, messageAccesses } from "~~/schema/message-access";
-import { UserHelper, UserLike } from "./user-utils";
+import { UserUtil, UserLike } from "./user-utils";
 import { Message, messages } from "~~/schema/message";
 import { users } from "~~/schema/user";
 
 export type ConversationIdentifier = Conversation | Conversation["id"];
 export class ConversationUtil {
     c: Conversation;
-    members: UserHelper[];
+    members: UserUtil[];
     access?: MessageAccess;
 
     // Static Methods
     static async with(...ids: UserLike[]) {
         const _uuids = await Promise.all(
-            ids.map(async (id) => (await UserHelper.get(id))!.id)
+            ids.map(async (id) => (await UserUtil.get(id))!.id)
         );
 
         // Remove duplicates
@@ -49,14 +49,14 @@ export class ConversationUtil {
         const { from, message, to, type = "message" } = config;
 
         // Get the receivers
-        const sender = await UserHelper.from(from);
-        const direct = await UserHelper.from(to);
+        const sender = await UserUtil.from(from);
+        const direct = await UserUtil.from(to);
         const receivers = [direct!];
 
         if (direct?.is("ROLE_ROSTER_PROVIDER")) {
             // Include company to the receivers
             const companyId = direct.user.metadata.companyId!;
-            const company = await UserHelper.from(companyId);
+            const company = await UserUtil.from(companyId);
             receivers.push(company!);
         }
 
@@ -110,8 +110,8 @@ export class ConversationUtil {
                 .from(conversationMember)
                 .innerJoin(users, eq(conversationMember.userId, users.id))
                 .where(eq(conversationMember.conversationId, id))
-        ).map<UserHelper>((u) => {
-            return new UserHelper(u);
+        ).map<UserUtil>((u) => {
+            return new UserUtil(u);
         });
 
         // Check for any accesses
@@ -144,7 +144,7 @@ export class ConversationUtil {
     }
 
     async name(base: UserLike) {
-        const user = (await UserHelper.from(base))!;
+        const user = (await UserUtil.from(base))!;
 
         // Get the other members
         const others = this.other(user);
@@ -163,11 +163,11 @@ export class ConversationUtil {
     }
 
     async hasAccess(base: UserLike) {
-        const user = await UserHelper.from(base);
+        const user = await UserUtil.from(base);
         if (!user) return false;
 
         // Check if user is found in the member
-        if (!this.members.some(user.equals)) return false;
+        if (!this.members.some((m) => user.equals(m))) return false;
 
         // Check if user is a roster, if not then true
         if (!user.is("ROLE_ROSTER_PROVIDER")) return true;
@@ -188,7 +188,7 @@ export class ConversationUtil {
                         .select()
                         .from(conversationMember)
                         .where(eq(conversationMember.conversationId, this.c.id))
-                ).map(async (m) => (await UserHelper.from(m.userId))!)
+                ).map(async (m) => (await UserUtil.from(m.userId))!)
             );
         }
 
@@ -205,7 +205,6 @@ export class ConversationUtil {
     }
 
     other(u: UserLike) {
-        console.log(this.members);
         return this.members.filter((m) => !m.equals(u));
     }
 

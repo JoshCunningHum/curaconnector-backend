@@ -12,5 +12,11 @@ export interface WSEmitEvents {
 
     "notif:message": [notification: Notification];
     "notif:visit-session": [notification: Notification];
-    "notif:location-invite": [];
+    "notif:visit-session-invite": [
+        from: string,
+        vsid: number,
+        checklist: string[]
+    ];
+    "notif:visit-session-accept": [vsid: number];
+    "notif:visit-session-end": [vsid: number];
 }

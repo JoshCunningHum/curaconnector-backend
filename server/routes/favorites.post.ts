@@ -1,7 +1,7 @@
 import { and, count, eq } from "drizzle-orm";
 import { z } from "zod";
 import { UserNotFoundError } from "~/utils/error";
-import { UserHelper } from "~/utils/user-utils";
+import { UserUtil } from "~/utils/user-utils";
 import { db } from "~~/db";
 import { favorites } from "~~/schema/favorites";
 
@@ -12,10 +12,10 @@ const bodySchema = z.object({
 export default defineEventHandler(async (event) => {
     const body = await validateBody(event, bodySchema);
     // ? Maybe just use the user-id in the event context?
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
 
     // Acquire the user in the parameters and check its validity
-    const provider = await UserHelper.from(body.id);
+    const provider = await UserUtil.from(body.id);
     if (!provider) {
         throw createError({
             statusCode: 403,

@@ -1,7 +1,7 @@
-import { UserHelper } from "~/utils/user-utils";
+import { UserUtil } from "~/utils/user-utils";
 
 export default defineEventHandler(async (event) => {
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
 
     // Get all the conversations
     const conversations = await ConversationUtil.with(user);

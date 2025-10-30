@@ -10,6 +10,9 @@ const anonRoutes = [
     // Images (handled by the images middleware for auth/verification)
     // TODO: Might add this as 'non-anon' right?
     /^\/images\/.*/,
+
+    // Dev Routes
+    "/reset",
 ];
 
 const isAnonRoute = (path: string) =>

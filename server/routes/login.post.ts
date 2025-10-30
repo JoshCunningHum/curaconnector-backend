@@ -5,7 +5,7 @@ import {
     createRefreshToken,
     refreshTokens,
 } from "~/utils/tokens";
-import { UserHelper } from "~/utils/user-utils";
+import { UserUtil } from "~/utils/user-utils";
 import { validateBody } from "~/utils/validateBody";
 
 const bodySchema = z.object({
@@ -19,8 +19,7 @@ export default defineEventHandler(async (event) => {
     const { email, password } = await validateBody(event, bodySchema);
 
     // Check if user exists
-    const user = await UserHelper.from(email);
-    console.log(user);
+    const user = await UserUtil.from(email);
 
     if (!user) {
         throw createError({

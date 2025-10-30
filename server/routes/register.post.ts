@@ -2,7 +2,7 @@ import { z } from "zod";
 import { DEFAULT_PROFILE_PICTURE, JWT_EXPIRES_IN } from "~/contants/config";
 import { get } from "~/utils/get";
 import { createAccessToken, createRefreshToken } from "~/utils/tokens";
-import { UserHelper } from "~/utils/user-utils";
+import { UserUtil } from "~/utils/user-utils";
 import { userRolesMap } from "~~/schema/user";
 
 // # MetaData Validation
@@ -80,7 +80,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Check if email is already used
-    const existing = await UserHelper.from(body.email);
+    const existing = await UserUtil.from(body.email);
 
     if (existing) {
         throw createError({
@@ -96,7 +96,7 @@ export default defineEventHandler(async (event) => {
         : await uploadPFP(_pfpData);
 
     // Create new user
-    const userH = await UserHelper.create({
+    const userH = await UserUtil.create({
         email: body.email,
         password: body.password,
         roles: [body.type],

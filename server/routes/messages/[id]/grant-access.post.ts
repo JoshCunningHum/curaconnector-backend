@@ -7,7 +7,7 @@ const schema = z.object({
 export default defineEventHandler(async (event) => {
     const body = await validateBody(event, schema);
 
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
     if (!user.is("ROLE_COMPANY")) {
         throw createError({
             statusCode: 403,

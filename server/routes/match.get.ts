@@ -1,7 +1,7 @@
 import { and, avg, count, eq } from "drizzle-orm";
 import { preferences } from "~/contants/preferences";
 import { UserNotFoundError } from "~/utils/error";
-import { UserHelper } from "~/utils/user-utils";
+import { UserUtil } from "~/utils/user-utils";
 import { db } from "~~/db";
 import { favorites } from "~~/schema/favorites";
 import { ratings } from "~~/schema/ratings";
@@ -9,7 +9,7 @@ import { users } from "~~/schema/user";
 
 export default defineEventHandler(async (event) => {
     // TODO: Implement batching
-    const userH = await UserHelper.from(event);
+    const userH = await UserUtil.from(event);
     if (!userH) throw UserNotFoundError();
 
     // Return nothing when user is not recipient/company
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
 
     const mapped = await Promise.all(
         results.map(async (u) => {
-            const h = new UserHelper(u);
+            const h = new UserUtil(u);
 
             // Get Ratings
             const [r] = await db

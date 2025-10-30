@@ -6,14 +6,17 @@ export const generateToken = (
         length?: number;
     } = {}
 ) => {
-    const { characters, length } = Object.assign({}, _config, {
-        characters: "0123456789",
-        length: 4,
-    });
+    const { characters, length } = Object.assign(
+        {
+            characters: "0123456789",
+            length: 4,
+        },
+        _config
+    );
 
     let r: string = "";
     for (let i = 0; i < length; i++) {
-        const index = Math.random() * length;
+        const index = ~~(Math.random() * length);
         r += characters[index];
     }
 

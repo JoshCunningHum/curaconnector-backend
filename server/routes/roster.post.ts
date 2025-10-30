@@ -4,7 +4,7 @@ import { uploadPFP } from "~/utils/uploadPFP";
 
 export default defineEventHandler(async (event) => {
     // Must be a company user type
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
     if (!user) throw UserNotFoundError();
 
     if (!user.is("ROLE_COMPANY")) {
@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
     const profilePicPath = await uploadPFP(profilePic);
 
     // Create a new user
-    const rosterUser = await UserHelper.create({
+    const rosterUser = await UserUtil.create({
         email: data.email,
         password: data.password,
         roles: ["ROLE_ROSTER_PROVIDER"],

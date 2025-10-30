@@ -1,7 +1,7 @@
 // A route for getting the checklist items
 
 export default defineEventHandler(async (event) => {
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
     if (!user) throw UserNotFoundError();
 
     console.log(user);

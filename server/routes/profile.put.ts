@@ -6,7 +6,7 @@ import { db } from "~~/db";
 import { users } from "~~/schema/user";
 
 export default defineEventHandler(async (event) => {
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
 
     const multipart = await readMultipartFormData(event);
     const pfpData = multipart?.find((el) => el.name === "profilePicture");

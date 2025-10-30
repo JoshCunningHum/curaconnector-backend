@@ -123,7 +123,8 @@ export class LocationSharingManager {
 
     updateLocationPools() {
         if (!this.sessions.size) return;
-        this.sessions.forEach((s) => s.updateLocationPools);
+        console.log(`Location sharing sessions: ${this.sessions.size}`);
+        this.sessions.forEach((s) => s.updateLocationPools());
     }
 
     getSession(s: SessionIdentifier) {

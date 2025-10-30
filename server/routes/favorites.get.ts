@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { UserNotFoundError } from "~/utils/error";
-import { UserHelper } from "~/utils/user-utils";
+import { UserUtil } from "~/utils/user-utils";
 import { db } from "~~/db";
 import { favorites } from "~~/schema/favorites";
 import { users } from "~~/schema/user";
@@ -8,7 +8,7 @@ import { users } from "~~/schema/user";
 // This entry point might not be needed
 
 export default defineEventHandler(async (event) => {
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
     if (!user) throw UserNotFoundError();
 
     if (!user.is("ROLE_RECIPIENT", "ROLE_COMPANY")) {

@@ -12,8 +12,8 @@ import { NewUser, User, UserRole, users } from "~~/schema/user";
 
 // All-utils regarding users
 
-export type UserLike = User["id"] | User["email"] | User | H3Event | UserHelper;
-export class UserHelper {
+export type UserLike = User["id"] | User["email"] | User | H3Event | UserUtil;
+export class UserUtil {
     // Properties
     user: User;
 
@@ -36,16 +36,16 @@ export class UserHelper {
         return user;
     }
 
-    static from(obj: H3Event): Promise<UserHelper>;
-    static from(obj: UserHelper | User): UserHelper;
-    static from(obj: string | number): Promise<UserHelper | undefined>;
-    static from(obj: UserLike): Promise<UserHelper | undefined>;
+    static from(obj: H3Event): Promise<UserUtil>;
+    static from(obj: UserUtil | User): UserUtil;
+    static from(obj: string | number): Promise<UserUtil | undefined>;
+    static from(obj: UserLike): Promise<UserUtil | undefined>;
     static from(obj: UserLike) {
         if (this.is(obj)) return obj;
         return new Promise(async (res, rej) => {
             const user = await this.get(obj);
             if (!user) res(undefined);
-            else res(new UserHelper(user));
+            else res(new UserUtil(user));
         });
     }
 
@@ -62,10 +62,10 @@ export class UserHelper {
             .values({ ...obj, password })
             .returning();
 
-        return new UserHelper(user);
+        return new UserUtil(user);
     }
 
-    static is(u: UserLike): u is UserHelper {
+    static is(u: UserLike): u is UserUtil {
         if (!u) return false;
         if (typeof u !== "object") return false;
         return "equals" in u;
@@ -79,7 +79,7 @@ export class UserHelper {
     // Getters
     get sync() {
         return new Promise(async (res, rej) => {
-            const user = await UserHelper.get(this.user, true);
+            const user = await UserUtil.get(this.user, true);
             this.user = user!;
             res(user);
         });

@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
         });
 
     const body = await validateBody(event, bodySchema);
-    const author = await UserHelper.from(event);
+    const author = await UserUtil.from(event);
 
     // 1. Check user type permissions
     if (!author.is(...ratingAuthors)) {
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    const receiver = await UserHelper.from(receiverId);
+    const receiver = await UserUtil.from(receiverId);
     if (!receiver?.is(...ratingReceivers)) {
         throw createError({
             statusCode: 404,

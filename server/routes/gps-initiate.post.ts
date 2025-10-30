@@ -10,7 +10,7 @@ const bodySchema = z.object({
 
 export default defineEventHandler(async (event) => {
     const body = await validateBody(event, bodySchema);
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
 
     const msgId = body.messageId;
     const [msg] = await db

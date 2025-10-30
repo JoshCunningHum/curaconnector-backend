@@ -1,4 +1,4 @@
-import { UserHelper } from "~/utils/user-utils";
+import { UserUtil } from "~/utils/user-utils";
 
 export default defineNitroPlugin(async (nitro) => {
     // Update LastLogin
@@ -11,7 +11,7 @@ export default defineNitroPlugin(async (nitro) => {
             }`
         );
 
-        const user = await UserHelper.from(conn.id);
+        const user = await UserUtil.from(conn.id);
         await user!.online(true);
     });
 });

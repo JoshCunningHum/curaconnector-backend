@@ -12,7 +12,7 @@ const querySchema = z.object({
 
 export default defineEventHandler(async (event) => {
     const query = await getValidatedQuery(event, (q) => querySchema.parse(q));
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
 
     const notificationList = await db
         .select()
@@ -31,8 +31,5 @@ export default defineEventHandler(async (event) => {
         nextCursor = notificationList.at(-1)!.id;
     }
 
-    return {
-        notifications: notificationList,
-        nextCursor,
-    };
+    return { notifications: notificationList, nextCursor };
 });

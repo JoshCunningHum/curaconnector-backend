@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
         });
 
     const body = await validateBody(event, bodySchema);
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
 
     // 1. Verify the rating exists and belongs to the user
     const [rating] = await db

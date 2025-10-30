@@ -1,10 +1,6 @@
-import dayjs from "dayjs";
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { UserNotFoundError } from "~/utils/error";
 import { isObjectEmpty } from "~/utils/objects";
-import { db } from "~~/db";
-import { users } from "~~/schema/user";
 
 const bodySchema = z.object({
     // Base information
@@ -18,7 +14,7 @@ const bodySchema = z.object({
 export default defineEventHandler(async (event) => {
     const body = await validateBody(event, bodySchema);
 
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
     if (!user) throw UserNotFoundError();
 
     // Preference Updates

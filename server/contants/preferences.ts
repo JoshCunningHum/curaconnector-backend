@@ -124,8 +124,8 @@ enum Skills {
 }
 
 const skill = Preference.Subset<keyof typeof Skills>()({
-    demandKey: `prefSkills`,
-    supplyKey: "skills",
+    demandKey: `prefTitle`,
+    supplyKey: "title",
 });
 
 // Location
@@ -258,33 +258,3 @@ export const preferences = Preference.Pipeline(
 
 export type PatientPreference = typeof preferences.$inferDemand;
 export type ProviderPreference = typeof preferences.$inferSupply;
-
-// const t: ProviderPreference = {
-//     title: [
-//         "Bathing",
-//         "Companionship",
-//         "DME",
-//         "Dementia Care",
-//         "Groceries & Shopping",
-//         "Grooming",
-//         "Hospice",
-//         "Meal Prep",
-//         "Medication Reminders",
-//         "Palliative Care",
-//         "Toileting",
-//         "Transferring & Mobility",
-//         "Wound Care",
-//     ],
-//     knownLanguage: ["English", "Chinese", "Spanish", "Vietnamese"],
-//     religionAwareness: ["Agnostic", "Catholic", "Hindu", "Muslim"],
-//     gender: "female",
-//     experience: 1,
-//     veteran: false,
-//     allowSmoke: true,
-//     smokes: false,
-//     canTelemed: false,
-//     liftLimit: 1,
-//     canStart: "2025-01-01T10:36:54.000Z",
-//     canEnd: "2027-01-01T10:36:54.000Z",
-//     hourlyRate: 1,
-// };

@@ -21,10 +21,10 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await validateBody(event, bodySchema);
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
 
     // Check if receiver(to) exists
-    const receiver = await UserHelper.from(to);
+    const receiver = await UserUtil.from(to);
     if (!receiver) {
         throw createError({
             statusCode: 404,

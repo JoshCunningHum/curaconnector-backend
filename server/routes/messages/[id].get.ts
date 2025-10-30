@@ -9,10 +9,10 @@ const querySchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-    const user = await UserHelper.from(event);
+    const user = await UserUtil.from(event);
 
     const other = parseInt(getRouterParam(event, "id")!);
-    const otherUser = await UserHelper.from(other);
+    const otherUser = await UserUtil.from(other);
 
     const query = await validateQuery(event, querySchema);
 
